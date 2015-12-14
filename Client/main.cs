@@ -245,7 +245,12 @@ namespace Ict.Petra.Plugins.BankimportCSV.Client
                             Value = Value.Substring(0, Value.IndexOf(" DTA "));
                         }
 
-                        row.Description = Value;
+                        if (row.Description.Length > 0)
+                        {
+                            row.Description += " ";
+                        }
+
+                        row.Description += Value;
                     }
                     else if (UseAs.ToLower() == "amount")
                     {
