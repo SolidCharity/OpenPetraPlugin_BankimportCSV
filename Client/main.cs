@@ -255,6 +255,13 @@ namespace Ict.Petra.Plugins.BankimportCSV.Client
 
                         row.TransactionAmount = Convert.ToDecimal(Value, System.Globalization.CultureInfo.InvariantCulture);
                     }
+                    else if (UseAs.ToLower() == "directdebiths")
+                    {
+                        if (Value == "S")
+                        {
+                            row.TransactionAmount *= -1;
+                        }
+                    }
                     else if (UseAs.ToLower() == "currency")
                     {
                         if (stmt.CurrencyCode == string.Empty)
