@@ -22,6 +22,7 @@
 // along with OpenPetra.org.  If not, see <http://www.gnu.org/licenses/>.
 //
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Xml;
@@ -156,7 +157,12 @@ namespace Ict.Petra.Plugins.BankimportCSV.Client
             string ThousandsSeparator = (ANumberFormat == TDlgSelectCSVSeparator.NUMBERFORMAT_AMERICAN ? "," : ".");
             string DecimalSeparator = (ANumberFormat == TDlgSelectCSVSeparator.NUMBERFORMAT_AMERICAN ? "." : ",");
 
-            string[] StatementData = AStatementData.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            List <String> StatementData = new List<string>();
+            string [] stmtarray = AStatementData.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string line in stmtarray)
+            {
+                StatementData.Add(line);
+            }
 
             // skip headers
             Int32 lineCounter = FirstTransactionRow;
@@ -191,11 +197,10 @@ namespace Ict.Petra.Plugins.BankimportCSV.Client
             // TODO would need to allow the user to change the order&meaning of columns
             string[] ColumnsUsage = AColumnsUsage.Split(new char[] { ',' });
 
-            while (lineCounter < StatementData.Length)
+            for (; lineCounter < StatementData.Count; lineCounter++)
             {
                 string line = StatementData[lineCounter];
 
-                lineCounter++;
                 rowCount++;
 
                 AEpTransactionRow row = MainDS.AEpTransaction.NewRowTyped();
@@ -205,7 +210,7 @@ namespace Ict.Petra.Plugins.BankimportCSV.Client
 
                 foreach (string UseAs in ColumnsUsage)
                 {
-                    string Value = StringHelper.GetNextCSV(ref line, ASeparator);
+                    string Value = StringHelper.GetNextCSV(ref line, StatementData, ref lineCounter, ASeparator);
 
                     if (UseAs.ToLower() == "dateeffective")
                     {
