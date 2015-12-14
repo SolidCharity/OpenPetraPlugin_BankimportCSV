@@ -4,7 +4,7 @@
 // @Authors:
 //       timop
 //
-// Copyright 2004-2014 by OM International
+// Copyright 2004-2015 by OM International
 //
 // This file is part of OpenPetra.org.
 //
@@ -118,7 +118,7 @@ namespace Ict.Petra.Plugins.BankimportCSV.Client
                 DlgSeparator.DateFormat,
                 DlgSeparator.NumberFormat,
                 TUserDefaults.GetStringDefault(
-                    "BankimportCSVColumnsUsage",
+                    "BANKIMPORTCSV" + ABankAccountCode,
                     "unused,DateEffective,Description,Amount,Currency"),
                 BankStatementFilename,
                 StatementData);
