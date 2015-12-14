@@ -214,6 +214,11 @@ namespace Ict.Petra.Plugins.BankimportCSV.Client
 
                     if (UseAs.ToLower() == "dateeffective")
                     {
+                        if (Value.Length == "dd.mm.yy".Length)
+                        {
+                            DateFormat = DateFormat.Replace("yyyy", "yy");
+                        }
+
                         try
                         {
                             row.DateEffective = XmlConvert.ToDateTime(Value, DateFormat);
