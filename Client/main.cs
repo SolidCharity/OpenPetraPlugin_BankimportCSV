@@ -186,7 +186,7 @@ namespace Ict.Petra.Plugins.BankimportCSV.Client
 
             foreach(string BankNameForParameter in BankNameForParameters)
             {
-                if (stmt.Filename.Contains(BankNameForParameter.Substring("BankNameFor".Length)))
+                if (stmt.Filename.ToLower().Contains(BankNameForParameter.Substring("BankNameFor".Length).ToLower()))
                 {
                     stmt.Filename = TAppSettingsManager.GetValue(BankNameForParameter);
                 }
