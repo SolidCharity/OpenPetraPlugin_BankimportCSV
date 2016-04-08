@@ -248,7 +248,12 @@ namespace Ict.Petra.Plugins.BankimportCSV.Client
                     }
                     else if (UseAs.ToLower() == "accountname")
                     {
-                        row.AccountName = Value;
+                        if (row.AccountName.Length > 0)
+                        {
+                            row.AccountName += " ";
+                        }
+
+                        row.AccountName += Value;
                     }
                     else if (UseAs.ToLower() == "description")
                     {
