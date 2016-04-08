@@ -4,7 +4,7 @@
 // @Authors:
 //       timop
 //
-// Copyright 2004-2015 by OM International
+// Copyright 2004-2016 by OM International
 //
 // This file is part of OpenPetra.org.
 //
@@ -23,6 +23,7 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data;
 using System.IO;
 using System.Xml;
@@ -174,10 +175,22 @@ namespace Ict.Petra.Plugins.BankimportCSV.Client
             AEpStatementRow stmt = MainDS.AEpStatement.NewRowTyped();
             stmt.StatementKey = -1;
 
-            // TODO: depending on the path of BankStatementFilename you could determine between several bank accounts
             // TODO: BankAccountKey should be NOT NULL. for the moment not time to implement
             // stmt.BankAccountKey = Convert.ToInt64(TXMLParser.GetAttribute(RootNode, "BankAccountKey"));
             stmt.Filename = ABankStatementFilename;
+
+            // depending on the path of BankStatementFilename you could determine between several bank accounts
+            // search all config parameters starting with "BankNameFor", 
+            // and see if the rest of the parameter name is part of the filename or path
+            StringCollection BankNameForParameters = TAppSettingsManager.GetKeys("BankNameFor");
+
+            foreach(string BankNameForParameter in BankNameForParameters)
+            {
+                if (stmt.Filename.Contains(BankNameForParameter.Substring("BankNameFor".Length)))
+                {
+                    stmt.Filename = TAppSettingsManager.GetValue(BankNameForParameter);
+                }
+            }
 
             if (stmt.Filename.Length > AEpStatementTable.GetFilenameLength())
             {
